@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
+
+/* Import language and speech styles */
+@import '../styles/language-speech.css';
  
 @layer base {
   :root {
@@ -39,7 +41,7 @@
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
  
-    --card: 217.2 32.6% 12%;
+    --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
  
     --popover: 222.2 84% 4.9%;
@@ -54,8 +56,8 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
  
-    --accent: 217.2 91.2% 59.8%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
  
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -84,7 +86,7 @@
   .dark input,
   .dark select,
   .dark textarea {
-    @apply bg-background text-foreground border-input;
+    @apply bg-gray-800 text-gray-100 border-gray-700 placeholder:text-gray-400;
   }
 
   /* Improved text contrast */
@@ -108,7 +110,65 @@
 
   /* Card hover effects */
   .card {
-    @apply transition-all duration-200 hover:shadow-lg;
+    @apply transition-all duration-200 hover:shadow-lg dark:hover:shadow-gray-900/20;
+  }
+
+  /* Dark mode specific styles */
+  .dark {
+    /* Ensure proper contrast for text */
+    .text-muted-foreground {
+      @apply text-gray-400;
+    }
+
+    /* Improve button contrast */
+    .btn {
+      @apply text-gray-100;
+    }
+
+    /* Enhance card backgrounds */
+    .card {
+      @apply bg-gray-800 border-gray-700;
+    }
+
+    /* Improve form element contrast */
+    .form-control {
+      @apply bg-gray-800 border-gray-700 text-gray-100;
+    }
+
+    /* Better table contrast */
+    table {
+      @apply text-gray-100;
+    }
+
+    /* Enhance badge contrast */
+    .badge {
+      @apply text-gray-100;
+    }
+
+    /* Improve alert contrast */
+    .alert {
+      @apply bg-gray-800 border-gray-700;
+    }
+
+    /* Better progress bar visibility */
+    .progress {
+      @apply bg-gray-700;
+    }
+
+    /* Enhance dropdown contrast */
+    .dropdown-menu {
+      @apply bg-gray-800 border-gray-700;
+    }
+
+    /* Improve modal contrast */
+    .modal {
+      @apply bg-gray-800 border-gray-700;
+    }
+
+    /* Better tooltip contrast */
+    .tooltip {
+      @apply bg-gray-800 text-gray-100;
+    }
   }
 }
 

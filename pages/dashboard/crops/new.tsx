@@ -1,132 +1,177 @@
 import { useState } from "react"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import DashboardLayout from "@/components/dashboard-layout"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SpeakableElement } from "@/components/SpeakableElement"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { useToast } from "@/hooks/use-toast"
+import { Save, MapPin } from "lucide-react"
 
 export default function NewCropPage() {
   const router = useRouter()
-  const [formData, setFormData] = useState({
-    name: "",
-    variety: "",
-    fieldSize: "",
-    plantingDate: "",
-    expectedHarvest: "",
-  })
+  const { toast } = useToast()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    // Get existing crops from localStorage or initialize empty array
-    const existingCrops = JSON.parse(localStorage.getItem("crops") || "[]")
-    
-    // Create new crop with form data
-    const newCrop = {
-      id: Date.now().toString(),
-      ...formData,
-      health: 100,
-      status: "healthy",
-      lastUpdated: new Date().toISOString(),
-      alerts: 0,
-      image: "/placeholder.svg?height=300&width=600",
-      history: [
-        { date: new Date().toLocaleDateString(), health: 100 }
-      ],
-      treatments: [],
-      notes: "New crop field added to monitoring system."
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      toast({
+        title: "Success",
+        description: "New crop has been added successfully.",
+      })
+      
+      router.push("/dashboard")
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add new crop. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
     }
-    
-    // Add new crop to storage
-    localStorage.setItem("crops", JSON.stringify([...existingCrops, newCrop]))
-    
-    // Redirect to dashboard
-    router.push("/dashboard")
   }
 
   return (
     <DashboardLayout>
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-6 text-2xl font-bold tracking-tight">Add New Crop</h1>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Crop Details</CardTitle>
-            <CardDescription>Enter the details for your new crop field</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Field Name</Label>
-                <Input
-                  id="name"
-                  placeholder="e.g., North Field A"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="bg-background text-foreground placeholder:text-muted-foreground border-input"
-                />
-              </div>
+        <form onSubmit={handleSubmit}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Add New Crop</CardTitle>
+              <CardDescription>Create a new crop monitoring entry</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <SpeakableElement text="Enter crop name">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Crop Name</Label>
+                  <Input
+                    id="name"
+                    placeholder="Enter a name for this crop"
+                    required
+                  />
+                </div>
+              </SpeakableElement>
 
-              <div className="space-y-2">
-                <Label htmlFor="variety">Crop Variety</Label>
-                <Input
-                  id="variety"
-                  placeholder="e.g., Sweet Corn XH-5"
-                  value={formData.variety}
-                  onChange={(e) => setFormData({ ...formData, variety: e.target.value })}
-                  required
-                  className="bg-background text-foreground placeholder:text-muted-foreground border-input"
-                />
-              </div>
+              <SpeakableElement text="Select crop type">
+                <div className="space-y-2">
+                  <Label htmlFor="type">Crop Type</Label>
+                  <Select required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select crop type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="wheat">Wheat</SelectItem>
+                      <SelectItem value="rice">Rice</SelectItem>
+                      <SelectItem value="corn">Corn</SelectItem>
+                      <SelectItem value="soybean">Soybean</SelectItem>
+                      <SelectItem value="cotton">Cotton</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </SpeakableElement>
 
-              <div className="space-y-2">
-                <Label htmlFor="fieldSize">Field Size</Label>
-                <Input
-                  id="fieldSize"
-                  placeholder="e.g., 12 acres"
-                  value={formData.fieldSize}
-                  onChange={(e) => setFormData({ ...formData, fieldSize: e.target.value })}
-                  required
-                  className="bg-background text-foreground placeholder:text-muted-foreground border-input"
-                />
-              </div>
+              <SpeakableElement text="Enter field area in hectares">
+                <div className="space-y-2">
+                  <Label htmlFor="area">Field Area (hectares)</Label>
+                  <Input
+                    id="area"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="Enter field area"
+                    required
+                  />
+                </div>
+              </SpeakableElement>
 
-              <div className="space-y-2">
-                <Label htmlFor="plantingDate">Planting Date</Label>
-                <Input
-                  id="plantingDate"
-                  type="date"
-                  value={formData.plantingDate}
-                  onChange={(e) => setFormData({ ...formData, plantingDate: e.target.value })}
-                  required
-                  className="bg-background text-foreground placeholder:text-muted-foreground border-input"
-                />
-              </div>
+              <SpeakableElement text="Enter planting date">
+                <div className="space-y-2">
+                  <Label htmlFor="plantingDate">Planting Date</Label>
+                  <Input
+                    id="plantingDate"
+                    type="date"
+                    required
+                  />
+                </div>
+              </SpeakableElement>
 
-              <div className="space-y-2">
-                <Label htmlFor="expectedHarvest">Expected Harvest Date</Label>
-                <Input
-                  id="expectedHarvest"
-                  type="date"
-                  value={formData.expectedHarvest}
-                  onChange={(e) => setFormData({ ...formData, expectedHarvest: e.target.value })}
-                  required
-                  className="bg-background text-foreground placeholder:text-muted-foreground border-input"
-                />
-              </div>
+              <SpeakableElement text="Enter field location">
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <div className="flex space-x-2">
+                    <Input
+                      id="latitude"
+                      type="number"
+                      step="0.000001"
+                      placeholder="Latitude"
+                      required
+                    />
+                    <Input
+                      id="longitude"
+                      type="number"
+                      step="0.000001"
+                      placeholder="Longitude"
+                      required
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="mt-2 w-full"
+                  >
+                    <MapPin className="mr-2 h-4 w-4" />
+                    Use Current Location
+                  </Button>
+                </div>
+              </SpeakableElement>
 
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" type="button" onClick={() => router.back()}>
+              <SpeakableElement text="Add additional notes about the crop">
+                <div className="space-y-2">
+                  <Label htmlFor="notes">Notes</Label>
+                  <Textarea
+                    id="notes"
+                    placeholder="Enter any additional information about this crop"
+                    className="min-h-[100px]"
+                  />
+                </div>
+              </SpeakableElement>
+            </CardContent>
+            <CardFooter className="flex justify-end space-x-2">
+              <SpeakableElement text="Cancel and return to dashboard">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  disabled={isSubmitting}
+                >
                   Cancel
                 </Button>
-                <Button type="submit">Create Crop</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+              </SpeakableElement>
+              <SpeakableElement text={isSubmitting ? "Creating new crop entry" : "Create new crop entry"}>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>Saving...</>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-4 w-4" />
+                      Create Crop
+                    </>
+                  )}
+                </Button>
+              </SpeakableElement>
+            </CardFooter>
+          </Card>
+        </form>
       </div>
     </DashboardLayout>
   )

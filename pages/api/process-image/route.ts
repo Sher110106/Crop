@@ -57,6 +57,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // First Vision Analysis for Disease Detection
         console.log('Starting crop disease analysis...');
         try {
+          console.log('Creating vision API request with context:', {
+            cropType,
+            imageDataSize: Math.round(imageData.length / 1024),
+            modelUsed: 'Qwen/Qwen2-VL-7B-Instruct'
+          });
+
           const visionResponse = await client.chat.completions.create({
             model: 'Qwen/Qwen2-VL-7B-Instruct',
             temperature: 0.2,
@@ -111,6 +117,12 @@ Format your response as a structured analysis that can be parsed, including:
 
           // Get detailed recommendations based on the analysis
           console.log('Requesting detailed recommendations...');
+          console.log('Creating recommendations request with context:', {
+            analysisTextLength: analysisText.length,
+            cropType,
+            modelUsed: 'meta-llama/Meta-Llama-3.1-8B-Instruct'
+          });
+
           const recommendationsResponse = await client.chat.completions.create({
             model: 'meta-llama/Meta-Llama-3.1-8B-Instruct',
             temperature: 0.3,

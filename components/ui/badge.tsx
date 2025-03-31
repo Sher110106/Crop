@@ -5,24 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>svg]:size-3 [&>svg]:shrink-0 gap-1.5 cursor-default select-none",
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 dark:focus:ring-offset-gray-800",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80 dark:bg-primary/80 dark:hover:bg-primary/70",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground shadow hover:bg-secondary/80",
+          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600",
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
-        outline:
-          "text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
-        success:
-          "border-transparent bg-green-500 text-white shadow hover:bg-green-600",
-        warning:
-          "border-transparent bg-yellow-500 text-white shadow hover:bg-yellow-600",
-        info:
-          "border-transparent bg-blue-500 text-white shadow hover:bg-blue-600",
+          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 dark:bg-red-900/80 dark:text-red-200 dark:hover:bg-red-900/70",
+        outline: "text-foreground dark:text-gray-100",
+        success: "border-transparent bg-green-500 text-white hover:bg-green-500/80 dark:bg-green-900/80 dark:text-green-200 dark:hover:bg-green-900/70",
+        warning: "border-transparent bg-yellow-500 text-white hover:bg-yellow-500/80 dark:bg-yellow-900/80 dark:text-yellow-200 dark:hover:bg-yellow-900/70",
+        info: "border-transparent bg-blue-500 text-white hover:bg-blue-500/80 dark:bg-blue-900/80 dark:text-blue-200 dark:hover:bg-blue-900/70",
       },
     },
     defaultVariants: {

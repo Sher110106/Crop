@@ -1,90 +1,106 @@
-export interface ImageAnalysis {
-  timestamp: Date;
-  analysisResults: {
-    diseaseDetection?: {
-      detectedDisease: string;
-      confidence: number;
-      affectedArea: string;
-      severity: 'low' | 'medium' | 'high';
-    };
-    growthMetrics?: {
-      plantHeight?: number;
-      leafColor: string;
-      leafCondition: string;
-      estimatedMaturity: number;
-    };
-    soilAnalysis?: {
-      soilColor: string;
-      moistureLevel: string;
-      visibleIssues: string[];
-    };
-    generalHealth: {
-      score: number;
-      observations: string[];
-      concerns: string[];
-    };
-  };
-  aiRecommendations: string[];
-  weatherConditions?: {
-    temperature: number;
-    humidity: number;
-    lightLevel: string;
-  };
+import { CropAnalysisResult } from "@/lib/utils";
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+  address?: string;
 }
 
-export interface TimelineEntry {
+export interface WeatherData {
+  temperature: number;
+  humidity: number;
+  windSpeed: number;
+  precipitation: number;
+  description: string;
+  icon: string;
+  timestamp: string;
+}
+
+export interface TimelineEvent {
   id: string;
-  timestamp: Date;
-  type: 'sowing' | 'inspection' | 'treatment' | 'harvest' | 'other';
-  data: {
-    imageAnalysis?: ImageAnalysis;
-    notes?: string;
-    measurements?: {
-      soilPH?: number;
-      temperature?: number;
-      humidity?: number;
-    };
-    treatments?: {
-      type: string;
-      product: string;
-      quantity: string;
-    }[];
+  date: string;
+  type: 'planting' | 'analysis' | 'treatment' | 'harvest' | 'observation';
+  imageData?: {
+    url: string;
+    analysis?: CropAnalysisResult;
   };
-  contextualInsights: {
-    comparisonWithPrevious?: {
-      healthTrend: 'improving' | 'declining' | 'stable';
-      significantChanges: string[];
-    };
-    seasonalContext: {
-      expectedCondition: string;
-      deviationsFromNormal: string[];
-    };
+  metrics?: {
+    health: number;
+    soilMoisture?: number;
+    temperature?: number;
+    rainfall?: number;
   };
+  notes: string;
 }
 
-export interface CropRecord {
+export interface CropHistory {
+  date: string;
+  health: number;
+}
+
+export interface Treatment {
+  date: string;
+  type: string;
+  details: string;
+}
+
+export interface GrowthStage {
+  current: string;
+  week: number;
+  totalWeeks: number;
+  progress: number;
+}
+
+export interface WaterCycle {
+  date: string;
+  time: string;
+  amount: string;
+  priority: "high" | "medium" | "low";
+}
+
+export interface EnvironmentalData {
+  temperature: number;
+  humidity: number;
+  windSpeed: number;
+  sunlight: number;
+}
+
+export interface UpcomingTask {
+  type: string;
+  date: string;
+  priority: "high" | "medium" | "low";
+  details: string;
+}
+
+export interface Recommendation {
+  category: string;
+  title: string;
+  description: string;
+  priority: "high" | "medium" | "low";
+}
+
+export interface Crop {
   id: string;
   name: string;
   variety: string;
-  fieldLocation: {
-    name: string;
-    coordinates?: {
-      lat: number;
-      lng: number;
-    };
-  };
-  sowingDate: Date;
-  expectedHarvestDate: Date;
-  timeline: TimelineEntry[];
-  currentHealth: number;
-  status: 'active' | 'harvested' | 'failed';
-  healthTrends: {
-    lastUpdate: Date;
-    weeklyScores: number[];
-    majorEvents: {
-      date: Date;
-      event: string;
-      impact: 'positive' | 'negative' | 'neutral';
-    }[];
-  };
+  fieldSize: string;
+  plantingDate: string;
+  expectedHarvest: string;
+  health: number;
+  type: string;
+  status: "healthy" | "warning" | "critical";
+  lastUpdated: string;
+  alerts: number;
+  image: string;
+  history: CropHistory[];
+  treatments: Treatment[];
+  notes: string;
+  timeline: TimelineEvent[];
+  location: Location;
+  weather?: WeatherData;
+  growthStage?: GrowthStage;
+  nextWaterCycle?: WaterCycle;
+  environmentalData?: EnvironmentalData;
+  upcomingTasks?: UpcomingTask[];
+  recommendations?: Recommendation[];
 }

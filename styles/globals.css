@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./language-speech.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -132,4 +133,77 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Speaking functionality styles */
+.speaking {
+  position: relative;
+}
+
+.speaking::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--primary-rgb), 0.1);
+  border-radius: 4px;
+  pointer-events: none;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.speakable-element {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speakable-element:hover {
+  background: rgba(var(--primary-rgb), 0.05);
+}
+
+.speakable-element:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.speech-indicator {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--foreground);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.speech-tooltip {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--foreground);
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

@@ -8,12 +8,12 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground dark:bg-gray-800",
+        default: "bg-background text-foreground dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700",
         destructive:
-          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
-        success: "border-green-500/50 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 [&>svg]:text-green-500",
-        warning: "border-yellow-500/50 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400 [&>svg]:text-yellow-500",
-        info: "border-blue-500/50 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 [&>svg]:text-blue-500",
+          "border-destructive/50 text-destructive dark:border-destructive/50 dark:text-red-400 [&>svg]:text-destructive dark:[&>svg]:text-red-400",
+        success: "border-green-500/50 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 dark:border-green-500/30 [&>svg]:text-green-500 dark:[&>svg]:text-green-400",
+        warning: "border-yellow-500/50 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-500/30 [&>svg]:text-yellow-500 dark:[&>svg]:text-yellow-400",
+        info: "border-blue-500/50 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-500/30 [&>svg]:text-blue-500 dark:[&>svg]:text-blue-400",
       },
     },
     defaultVariants: {
@@ -41,7 +41,7 @@ const AlertTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h5
     ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+    className={cn("mb-1 font-medium leading-none tracking-tight dark:text-gray-100", className)}
     {...props}
   />
 ))
@@ -53,7 +53,7 @@ const AlertDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm [&_p]:leading-relaxed", className)}
+    className={cn("text-sm [&_p]:leading-relaxed dark:text-gray-300", className)}
     {...props}
   />
 ))
